@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 8000;
+const port = process.env.PORT || 8000;
 
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -13,7 +13,10 @@ const urlRouter = require('./routes/url');
 const staticRoutes = require('./routes/staticRouter');
 const userRouter = require('./routes/user');
 
-connectMongoDB('mongodb://localhost:27017/short-url').then(() => {
+// Use environment variable for MongoDB connection
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/short-url';
+
+connectMongoDB(MONGODB_URI).then(() => {
     console.log('MongoDB connected');
     });
 
