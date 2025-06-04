@@ -13,8 +13,8 @@ const urlRouter = require('./routes/url');
 const staticRoutes = require('./routes/staticRouter');
 const userRouter = require('./routes/user');
 
-// Use environment variable for MongoDB connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/short-url';
+// MongoDB Atlas connection string
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://surveersinghguglani:avqJrq01m0nDNGRV@cluster0.okmweum.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
 connectMongoDB(MONGODB_URI).then(() => {
     console.log('MongoDB connected');
