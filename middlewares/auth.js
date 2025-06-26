@@ -36,7 +36,16 @@ async function checkAuth(req, res, next) {
   // next();
 }
 
+function checkAdmin(req, res, next) {
+  if (req.user && req.user.isAdmin) {
+    next();
+  } else {
+    res.status(403).send('Forbidden: Admins only');
+  }
+}
+
 module.exports = {
   restrictToLoggedinUserOnly,
   checkAuth,
+  checkAdmin,
 };

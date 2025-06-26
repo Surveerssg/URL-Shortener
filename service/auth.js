@@ -17,6 +17,7 @@ function setUser( user) {
     _id: user._id,
     name: user.name,
     email: user.email,
+    isAdmin: user.isAdmin,
   }, JWT_SECRET);
 }
 function getUser(token) {
