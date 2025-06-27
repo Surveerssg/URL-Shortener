@@ -10,6 +10,9 @@ async function handleUserSignup(req, res) {
     return res.status(400).render("signup", { error: errors.array()[0].msg });
   }
   const { name, email, password } = req.body;
+  if (password.length < 6) {
+    return res.status(400).render("signup", { error: "Password must be at least 6 characters." });
+  }
   const hashedPassword = await bcrypt.hash(password, 10);
   await User.create({
     name,

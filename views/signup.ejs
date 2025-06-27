@@ -41,6 +41,9 @@
   <body>
     <div class="signup-container">
       <h1 class="brand">🔗 URL Shortener</h1>
+      <% if (typeof error !== 'undefined') { %>
+        <div class="alert alert-danger"><%= error %></div>
+      <% } %>
       <form action="/user" method="POST">
         <div class="mb-3">
           <label class="form-label">Full Name</label>
@@ -52,7 +55,17 @@
         </div>
         <div class="mb-3">
           <label class="form-label">Password</label>
-          <input type="password" class="form-control" name="password" required>
+          <input type="password" class="form-control" name="password" id="password" required>
+          <div id="password-strength" style="height: 5px; background: #eee; margin-top: 5px;">
+            <div id="strength-bar" style="height: 100%; width: 0; background: red;"></div>
+          </div>
+          <small id="strength-text" style="color: red;">Min 6 characters</small>
+          <ul id="password-requirements" style="list-style: none; padding-left: 0;">
+            <li id="req-length">• At least 6 characters</li>
+            <li id="req-uppercase">• One uppercase letter (suggested)</li>
+            <li id="req-number">• One number (suggested)</li>
+            <li id="req-special">• One special character (suggested)</li>
+          </ul>
         </div>
         <div class="d-grid">
           <button type="submit" class="btn btn-primary">Sign Up</button>
@@ -63,5 +76,62 @@
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    const passwordInput = document.getElementById('password');
+    const strengthBar = document.getElementById('strength-bar');
+    const strengthText = document.getElementById('strength-text');
+    const reqLength = document.getElementById('req-length');
+    const reqUppercase = document.getElementById('req-uppercase');
+    const reqNumber = document.getElementById('req-number');
+    const reqSpecial = document.getElementById('req-special');
+
+    passwordInput.addEventListener('input', function() {
+      const value = passwordInput.value;
+      let strength = 0;
+
+      // Check requirements
+      if (value.length >= 6) {
+        reqLength.style.color = 'green'; strength++;
+      } else {
+        reqLength.style.color = 'red';
+      }
+      if (/[A-Z]/.test(value)) {
+        reqUppercase.style.color = 'green'; strength++;
+      } else {
+        reqUppercase.style.color = 'gray';
+      }
+      if (/\d/.test(value)) {
+        reqNumber.style.color = 'green'; strength++;
+      } else {
+        reqNumber.style.color = 'gray';
+      }
+      if (/[^A-Za-z0-9]/.test(value)) {
+        reqSpecial.style.color = 'green'; strength++;
+      } else {
+        reqSpecial.style.color = 'gray';
+      }
+
+      // Update strength bar and text
+      const percent = (strength / 4) * 100;
+      strengthBar.style.width = percent + '%';
+      if (value.length < 6) {
+        strengthBar.style.background = 'red';
+        strengthText.textContent = 'Min 6 characters';
+        strengthText.style.color = 'red';
+      } else if (strength <= 2) {
+        strengthBar.style.background = 'orange';
+        strengthText.textContent = 'Weak';
+        strengthText.style.color = 'orange';
+      } else if (strength === 3) {
+        strengthBar.style.background = 'yellow';
+        strengthText.textContent = 'Medium';
+        strengthText.style.color = 'goldenrod';
+      } else {
+        strengthBar.style.background = 'green';
+        strengthText.textContent = 'Strong';
+        strengthText.style.color = 'green';
+      }
+    });
+    </script>
   </body>
 </html>
